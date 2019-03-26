@@ -1,14 +1,12 @@
-
 var number;
 var startYear;
 var endYear;
 var query;
 
-$("#search").click(function(){
-    $(".searchResults").empty();
-});
 
-$("#search").click(function(){
+$(".search").click(function(){
+    event.preventDefault();
+    $(".searchResults").empty();
     query=$("#searchTerm").val();
     number=$("#numRecords").val();
     startYear=$("#startYear").val();
@@ -24,14 +22,30 @@ $("#search").click(function(){
         console.log(response);
         console.log(queryUrl);
         console.log(response.response.docs[0].lead_paragraph);
+        console.log(response.response.docs[0].web_url);
     
         for(var i=0; i<number; i++){
             var noticediv=$("<div>");
-            var p =$("<p>");
+            var t =$("<h5>");
+            var p = $("<p>");
+            var a = $("<a>");
+            var hr = $("<hr>");
+            var searchUrl = response.response.docs[i].web_url;
+            t.text(response.response.docs[i].headline.main);
+            a.attr("href", response.response.docs[i].web_url);
+            a.text(searchUrl);
             p.text(response.response.docs[i].lead_paragraph);
+            noticediv.append(t);
             noticediv.append(p);
+            noticediv.append(a);
+            noticediv.append(hr);
             $(".searchResults").prepend(noticediv);
         }
     });
+});
 
+$(".clearResults").click(function(){
+    event.preventDefault();
+
+    $(".searchResults").empty();
 });
